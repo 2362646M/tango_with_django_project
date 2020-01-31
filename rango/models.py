@@ -25,3 +25,13 @@ class Page(models.Model):
     
     def __str__(self):
         return self.title
+    
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        url = cleaned_data.get('url')
+        
+        if url and not url.startwith('http://'):
+            url = f'http://{url}'
+            cleaned_data['url'] = url
+            
+        return cleaned_data
