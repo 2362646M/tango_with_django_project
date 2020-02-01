@@ -31,7 +31,7 @@ def show_category(request, category_name_slug):
     context_dict = {}
     
     try:
-        #Find a category lug name, if can't raises exception, else returns True
+        #Find a category slug name, if can't raises exception, else returns True
         category= Category.objects.get(slug=category_name_slug)
         
         #Retrieve all associated pages
@@ -54,7 +54,7 @@ def add_category(request):
         
         if form.is_valid():
             form.save(commit=True)
-            return redirect('/rango/')
+            return redirect(reverse('rango:index'))
         else:
             print(form.errors)
     return render(request, 'rango/add_category.html', {'form': form})
@@ -64,9 +64,8 @@ def add_page(request, category_name_slug):
         category = Category.objects.get(slug=category_name_slug)
     except Category.DoesNotExist:
         category = None
-# You cannot add a page to a Category that does not exist...
     if category is None:
-        return redirect('/rango/')
+        return redirect(reverse('rango:index'))
     
     form = PageForm()
     
